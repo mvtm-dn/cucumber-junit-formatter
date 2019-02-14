@@ -1,0 +1,25 @@
+{
+  "name": "cucumber-junit-formatter",
+  "version": "0.0.1",
+  "description": "Cucmber.js junit xml formatter",
+  "repository": "https://github.com/mvtm-dn/cucumber-junit-formatter",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "cucumber": "^5.1.0",
+    "eslint": "^5.11.1",
+    "mocha": "^5.2.0",
+    "should": "^13.2.3"
+  },
+  "keywords": [],
+  "author": "Vasyl Moskalov <vasyl@h2i.sg>",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "xml": "^1.0.1"
+  },
+  "peerDependencies": {
+    "cucumber": ">=3.0.0"
+  }
+}

@@ -1,0 +1,5 @@
+*.tgz
+.git
+.git/*
+.gitignore
+.eslint.rc
