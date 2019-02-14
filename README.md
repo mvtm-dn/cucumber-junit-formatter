@@ -14,6 +14,11 @@ npm install --save-dev https://github.com/mvtm-dn/cucumber-junit-formatter.git
 cucumber-js -f node_modules/cucumber-junit-formatter:<output-file>
 ```
 
+### Configuration
+You can configure formatter via `--format-options <JSON-OPTIONS>`
+
+`withPackage:false`. If set then formatter add `package` attribute to `testsuite` element. Default value `false`.
+
 
 ## References
 

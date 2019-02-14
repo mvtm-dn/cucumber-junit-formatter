@@ -53,8 +53,12 @@ class JUnitFormatter extends Formatter {
     options.eventBroadcaster.on('test-case-finished', ({ sourceLocation })=>{    
       const { gherkinDocument, pickle, testCase } = options.eventDataCollector.getTestCaseData(sourceLocation);
       let testSuiteId=`${convertNameToId(gherkinDocument.feature.name)};${convertNameToId(pickle.name)}`;
-      let attr={name:testSuiteId,tests:0,failures:0,skipped:0,"package":convertNameToId(pickle.name),errors:0,time:(testCase.result.duration/1000).toFixed(3)},
+      let attr={name:testSuiteId,tests:0,failures:0,skipped:0,errors:0,time:((testCase.result.duration||0)/1000).toFixed(3)},
           testSuite=[{_attr:attr}];
+          
+      if (options.withPackage) {
+        attr["package"]=convertNameToId(pickle.name);
+      }
           
       if (pickle.tags.length) {
         testSuite.push({properites:pickle.tags.map(tag=>createProperty("tag",tag.name))});
