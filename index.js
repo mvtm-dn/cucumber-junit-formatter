@@ -52,7 +52,7 @@ class JUnitFormatter extends Formatter {
 
     options.eventBroadcaster.on('test-case-finished', ({ sourceLocation })=>{    
       const { gherkinDocument, pickle, testCase } = options.eventDataCollector.getTestCaseData(sourceLocation);
-      let testSuiteId=`${convertNameToId(gherkinDocument.feature.name)}';'${convertNameToId(pickle.name)}`;
+      let testSuiteId=`${convertNameToId(gherkinDocument.feature.name)};${convertNameToId(pickle.name)}`;
       let attr={name:testSuiteId,tests:0,failures:0,skipped:0,"package":convertNameToId(pickle.name),errors:0,time:(testCase.result.duration/1000).toFixed(3)},
           testSuite=[{_attr:attr}];
           
@@ -62,8 +62,8 @@ class JUnitFormatter extends Formatter {
       
       testCase.steps.forEach((step,index)=>{
         const {gherkinKeyword, pickleStep } = options.eventDataCollector.getTestStepData({testCase:testCase,index:index});
-        if (gherkinKeyword || step.result==='failed') {
-            let testCaseId=convertNameToId(gherkinKeyword?pickleStep.text:(index?'after':'before'));
+        if (gherkinKeyword || step.result.status==='failed') {
+            let testCaseId=convertNameToId(gherkinKeyword?pickleStep.text:`${pickle.name} ${index?'after':'before'}`);
             let testCase=[
                 {
                     _attr:{
