@@ -6,12 +6,12 @@ Based on [cucmber-pretty](https://github.com/kozhevnikov/cucumber-pretty) and [c
 
 ## Installation
 ```
-npm install --save-dev https://github.com/mvtm-dn/cucumber-junit-formatter.git
+npm install --save-dev cucumber-junit-formatter
 ```
 
 ## Use
 ```
-cucumber-js -f node_modules/cucumber-junit-formatter:<output-file>
+cucumber-js -f node_modules/cucumber-junit-formatter[:<output-file>]
 ```
 
 ### Configuration
