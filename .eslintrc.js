@@ -216,7 +216,7 @@ module.exports = {
         "nonblock-statement-body-position": "error",
         "object-curly-newline": "error",
         "object-curly-spacing": [
-            "warn",
+            "off",
             "never"
         ],
         "object-shorthand": "off",
