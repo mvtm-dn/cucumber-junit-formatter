@@ -1,9 +1,9 @@
 {
   "name": "cucumber-junit-formatter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cucmber.js junit xml formatter",
   "engines": {
-    "node": ">=8.0.0" 
+    "node": ">=8.0.0"
   },
   "repository": "https://github.com/mvtm-dn/cucumber-junit-formatter",
   "scripts": {
@@ -21,7 +21,14 @@
     "mocha": "^5.2.0",
     "should": "^13.2.3"
   },
-  "keywords": ["cucumber","junit","xml","test","testing","cucumber-js"],
+  "keywords": [
+    "cucumber",
+    "junit",
+    "xml",
+    "test",
+    "testing",
+    "cucumber-js"
+  ],
   "author": "Vasyl Moskalov <vasyl@h2i.sg>",
   "license": "MIT",
   "main": "index.js",
