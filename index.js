@@ -45,6 +45,7 @@ class JUnitFormatter extends Formatter {
   /** @param {Options} options */
   constructor(options) {
     super(options);
+    this._result=[];
 
     options.eventBroadcaster.on('test-run-started', ()=>{
         this._result=[];
@@ -57,7 +58,7 @@ class JUnitFormatter extends Formatter {
           testSuite=[{_attr:attr}];
           
       if (options.withPackage) {
-        attr["package"]=convertNameToId(pickle.name);
+        attr.package=convertNameToId(pickle.name);
       }
           
       if (pickle.tags.length) {
@@ -66,22 +67,23 @@ class JUnitFormatter extends Formatter {
       
       testCase.steps.forEach((step,index)=>{
         const {gherkinKeyword, pickleStep } = options.eventDataCollector.getTestStepData({testCase:testCase,index:index});
-        if (gherkinKeyword || step.result.status==='failed') {
+        if (gherkinKeyword || (step.result && step.result.status==='failed')) {
+            let result=step.result || {};
             let testCaseId=convertNameToId(gherkinKeyword?pickleStep.text:`${pickle.name} ${index?'after':'before'}`);
             let testCase=[
                 {
                     _attr:{
                         classname:testCaseId,
                         name:gherkinKeyword?pickleStep.text:(pickle.name+(index?' after':' before')),
-                        time:((step.result.duration | 0)/1000).toFixed(3)
+                        time:((result.duration || 0)/1000).toFixed(3)
                     }
                 }
             ];
-            switch (step.result.status) {
+            switch (result.status) {
                 case 'passed':
                     break;
                 case 'failed':
-                    testCase.push(createFailureOrError(gherkinKeyword?"failure":"error",step.result.exception));
+                    testCase.push(createFailureOrError(gherkinKeyword?"failure":"error",result.exception));
                     if (gherkinKeyword) {
                         attr.failures+=1;
                     }
@@ -91,7 +93,7 @@ class JUnitFormatter extends Formatter {
                     break;
                 case 'pending':
                 case 'undefined':
-                    testCase.push(createFailure(step.result.status === 'pending' ? 'Pending' 
+                    testCase.push(createFailure(result.status === 'pending' ? 'Pending' 
                             : `Undefined step. Implement with the following snippet:\n  ${gherkinKeyword.trim()}(/^${pickleStep.text}$/, function(callback) {\n      // Write code here that turns the phrase above into concrete actions\n      callback(null, 'pending');\n  });`
                     ));
                     attr.failures+=1;
@@ -101,7 +103,8 @@ class JUnitFormatter extends Formatter {
                     attr.skipped+=1;
                     break;
                 default:
-                    testCase.push(createFailure(`Unknown status - ${step.result.status}`));
+                    break;
+//                    testCase.push(createFailure(`Unknown status - ${step.result.status}`));
             }
             attr.tests+=1;
             testSuite.push({testcase:testCase});
