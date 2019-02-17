@@ -1,4 +1,6 @@
 # cucumber-junit-formatter
+[![Build Status](https://travis-ci.com/mvtm-dn/cucumber-junit-formatter.svg?branch=master)](https://travis-ci.com/mvtm-dn/cucumber-junit-formatter)
+
 Cucmber.js junit xml formatter implementing event protocol. In fact this is fast and dirty hack. But I hope I do some work to improve and cleanup code. 
 
 Based on [cucmber-pretty](https://github.com/kozhevnikov/cucumber-pretty) and [cucmber-junit](https://github.com/stjohnjohnson/cucumber-junit).
