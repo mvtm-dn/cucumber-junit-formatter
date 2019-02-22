@@ -12,7 +12,7 @@
     "test": "nyc mocha --require babel-core/register",
     "posttest": "nyc report --reporter=text-summary",
     "coverage": "nyc report --reporter=html",
-    "coverage:ci": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
     "preversion": "npm test"
   },
   "devDependencies": {
