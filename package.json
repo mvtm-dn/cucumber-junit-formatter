@@ -9,16 +9,21 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "mocha --require babel-core/register",
+    "test": "nyc mocha --require babel-core/register",
+    "posttest": "nyc report --reporter=text-summary",
+    "coverage": "nyc report --reporter=html",
+    "coverage:ci": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "preversion": "npm test"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
     "cucumber": "^5.1.0",
     "eslint": "^5.11.1",
     "mocha": "^5.2.0",
+    "nyc": "^13.3.0",
     "should": "^13.2.3"
   },
   "keywords": [
