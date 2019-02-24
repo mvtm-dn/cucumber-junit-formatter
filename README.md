@@ -1,8 +1,8 @@
 # cucumber-junit-formatter
 [![Build Status](https://travis-ci.com/mvtm-dn/cucumber-junit-formatter.svg?branch=master)](https://travis-ci.com/mvtm-dn/cucumber-junit-formatter)
-[![Coverage Status](https://coveralls.io/repos/github/mvtm-dn/cucumber-junit-formatter/badge.svg?branch=master)](https://coveralls.io/github/mvtm-dn/cucumber-junit-formatter?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/mvtm-dn/cucumber-junit-formatter/badge.png?branch=master)](https://coveralls.io/github/mvtm-dn/cucumber-junit-formatter?branch=master)
 
-Cucmber.js junit xml formatter implementing event protocol. In fact this is fast and dirty hack. But I hope I do some work to improve and cleanup code. 
+Cucumber.js formatter that produced valid junit XML file for Jenkins/GitLab CI/CD and so on.  
 
 Based on [cucmber-pretty](https://github.com/kozhevnikov/cucumber-pretty) and [cucmber-junit](https://github.com/stjohnjohnson/cucumber-junit).
 'pending' or 'undefined' steps will be reported in xml as failures.
@@ -18,9 +18,12 @@ cucumber-js -f node_modules/cucumber-junit-formatter[:<output-file>]
 ```
 
 ### Configuration
-You can configure formatter via `--format-options <JSON-OPTIONS>`
+You can configure formatter via `--format-options <JSON-OPTIONS>`:
 
-`withPackage:false`. If set then formatter add `package` attribute to `testsuite` element. Default value `false`.
+| parameter | default value | Description |
+| --- | ---- | ----------- |
+| `scenarioAsStep` | `false` | If set to true means that feature is an testsuite and scenario is a step in test suite. Default value false (means that scenario is testsuite)
+|`withPackage` | `false` | If set then formatter add `package` attribute to `testsuite` element. Default value `false`.
 
 
 ## References
