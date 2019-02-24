@@ -1,12 +1,14 @@
 {
   "name": "cucumber-junit-formatter",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Cucmber.js junit xml formatter",
   "engines": {
     "node": ">=8.0.0"
   },
   "repository": "https://github.com/mvtm-dn/cucumber-junit-formatter",
-  "bugs": { "url" : "https://github.com/mvtm-dn/cucumber-junit-formatter/issues" },
+  "bugs": {
+    "url": "https://github.com/mvtm-dn/cucumber-junit-formatter/issues"
+  },
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
