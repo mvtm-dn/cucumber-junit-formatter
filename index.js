@@ -38,23 +38,17 @@ let createProperty=(name, value)=>{
     convertNameToId=(obj)=>{
         return obj.replace(/ /g, '-').toLowerCase();
     };
-    
-
 
 class JUnitFormatter extends Formatter {
   /** @param {Options} options */
   constructor(options) {
     super(options);
     this._result=[];
-
-    options.eventBroadcaster.on('test-run-started', ()=>{
-        this._result=[];
-    });
-
-    options.eventBroadcaster.on('test-case-finished', ({ sourceLocation })=>{    
+    
+    let scenarioAsSuite=({ sourceLocation })=>{    
       const { gherkinDocument, pickle, testCase } = options.eventDataCollector.getTestCaseData(sourceLocation);
       let testSuiteId=`${convertNameToId(gherkinDocument.feature.name)};${convertNameToId(pickle.name)}`;
-      let attr={name:testSuiteId,tests:0,failures:0,skipped:0,errors:0,time:((testCase.result.duration||0)/1000).toFixed(3)},
+      let attr={name:testSuiteId,tests:0,failures:0,skipped:0,errors:0,time:testCase.result.duration||0},
           testSuite=[{_attr:attr}];
           
       if (options.withPackage) {
@@ -102,6 +96,10 @@ class JUnitFormatter extends Formatter {
                     testCase.push({skipped: []});
                     attr.skipped+=1;
                     break;
+                case 'ambiguous':
+                    testCase.push(createFailureOrError("error",result.exception));
+                    attr.errors+=1;
+                    break;
                 default:
                     break;
 //                    testCase.push(createFailure(`Unknown status - ${step.result.status}`));
@@ -112,10 +110,82 @@ class JUnitFormatter extends Formatter {
       });
       this._result.push({testsuite:testSuite});
     
+    };
+    
+    let scenarioAsStep=({ sourceLocation })=>{    
+      const { gherkinDocument, pickle, testCase } = options.eventDataCollector.getTestCaseData(sourceLocation);
+      let testSuiteId=`${convertNameToId(gherkinDocument.feature.name)}`,
+          testCaseId=`${convertNameToId(pickle.name)}`;
+      let attr,testSuite;
+      if (this._result.length && this._result[this._result.length-1].testsuite[0]._attr.name===testSuiteId) {
+          testSuite=this._result[this._result.lenght-1].testsuite;
+          attr=testSuite[0]._attr;
+      }
+      else {
+          attr={name:testSuiteId,tests:0,failures:0,skipped:0,errors:0,time:0};
+          testSuite=[{_attr:attr}];
+          this._result.push({testsuite:testSuite});
+      }
+      attr.time+=testCase.result.duration;
+      attr.tests+=1;
+      let testCaseTag=[
+        {
+            _attr:{
+                classname:testCaseId,
+                name:pickle.name,
+                time:((testCase.result.duration ||0)/1000).toFixed(3)
+            }
+        }
+      ];
+      
+      testCase.steps.every((step,index)=>{
+        const {gherkinKeyword, pickleStep } = options.eventDataCollector.getTestStepData({testCase:testCase,index:index});
+        if (gherkinKeyword || (step.result && step.result.status==='failed')) {
+            let result=step.result || {};
+            switch (result.status) {
+                case 'passed':
+                    break;
+                case 'failed':
+                    testCaseTag.push(createFailureOrError(gherkinKeyword?"failure":"error",result.exception));
+                    attr[gherkinKeyword?"failures":"errors"]+=1;
+                    return false;
+                case 'pending':
+                case 'undefined':
+                    testCaseTag.push(createFailure(result.status === 'pending' ? 'Pending' 
+                            : `Undefined step. Implement with the following snippet:\n  ${gherkinKeyword.trim()}(/^${pickleStep.text}$/, function(callback) {\n      // Write code here that turns the phrase above into concrete actions\n      callback(null, 'pending');\n  });`
+                    ));
+                    attr.failures+=1;
+                    return false;
+                case 'skipped':
+                    testCaseTag.push({skipped: []});
+                    attr.skipped+=1;
+                    return false;
+                case 'ambiguous':
+                    testCaseTag.push(createFailureOrError("error",result.exception));
+                    attr.errors+=1;
+                    return false;
+                default:
+                    break;
+//                    testCase.push(createFailure(`Unknown status - ${step.result.status}`));
+            }
+        }
+        return true;
+      });
+      testSuite.push({testcase:testCaseTag});
+    
+    };    
+
+    options.eventBroadcaster.on('test-run-started', ()=>{
+        this._result=[];
     });
+
+    options.eventBroadcaster.on('test-case-finished', options.scenarioAsStep?scenarioAsStep:scenarioAsSuite);
 
 
     options.eventBroadcaster.on('test-run-finished', ()=>{
+        this._result.forEach((testSuite)=>{
+            testSuite.testsuite[0]._attr.time=(testSuite.testsuite[0]._attr.time/1000).toFixed(3);
+        });
         this.log(xml({ testsuites: this._result }, {indent:'  ',declaration: { encoding: 'UTF-8' }}));
     });
   }
