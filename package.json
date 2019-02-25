@@ -16,7 +16,8 @@
     "posttest": "nyc report --reporter=text-summary",
     "coverage": "nyc report --reporter=html",
     "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
-    "preversion": "npm test"
+    "preversion": "test `git rev-parse --abbrev-ref HEAD` = master && npm test",
+    "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
