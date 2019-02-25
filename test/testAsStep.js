@@ -376,6 +376,101 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
     })
     
    })
+   
+    describe('two features with one scenario with one step', () => {
+    beforeEach(function() {
+      this.testCase = [];
+      this.pickleEvent = (list,name,line)=>{
+          let events = Gherkin.generateEvents(list,name);
+          events.forEach(event => {
+            this.eventBroadcaster.emit(event.type, event)
+            if (event.type === 'pickle') {
+              this.eventBroadcaster.emit('pickle-accepted', {
+                type: 'pickle-accepted',
+                pickle: event.pickle,
+                uri: event.uri,
+              })
+            }
+          })
+          this.testCase.push({ sourceLocation: { uri: name, line: line } });
+      };
+
+    })
+
+    describe('passed', () => {
+      beforeEach(function() {
+      this.pickleEvent('@tag1 @tag2\n' +
+              'Feature: my feature\n' +
+              'my feature description\n' +
+              'Scenario: my scenario\n' +
+              'my scenario description\n' +
+              'Given my step',
+            'a.feature',
+            4
+        );
+        this.eventBroadcaster.emit('test-case-prepared', {
+          sourceLocation: this.testCase[0].sourceLocation,
+          steps: [
+            {
+              sourceLocation: { uri: 'a.feature', line: 6 },
+            },
+          ],
+        })
+        this.eventBroadcaster.emit('test-step-finished', {
+          index: 0,
+          testCase: this.testCase[0],
+          result: { duration: 1, status: Status.PASSED },
+        })
+        this.eventBroadcaster.emit('test-case-finished', {
+          sourceLocation: this.testCase[0].sourceLocation,
+          result: { duration: 1, status: Status.PASSED },
+        })
+      this.pickleEvent('@tag1 @tag2\n' +
+              'Feature: my feature 1\n' +
+              'my feature 1 description\n' +
+              'Scenario: my scenario 1\n' +
+              'my scenario 1 description\n' +
+              'Given my step1',
+            'b.feature',
+            4
+        );
+        this.eventBroadcaster.emit('test-case-prepared', {
+          sourceLocation: this.testCase[1].sourceLocation,
+          steps: [
+            {
+              sourceLocation: { uri: 'b.feature', line: 6 },
+            },
+          ],
+        })
+        this.eventBroadcaster.emit('test-step-finished', {
+          index: 0,
+          testCase: this.testCase[1],
+          result: { duration: 1, status: Status.PASSED },
+        })
+        this.eventBroadcaster.emit('test-case-finished', {
+          sourceLocation: this.testCase[1].sourceLocation,
+          result: { duration: 1, status: Status.PASSED },
+        })
+        this.eventBroadcaster.emit('test-run-finished')
+      })
+
+      it('outputs the features', function() {
+        expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
+      '<testsuites>\n'+
+      '  <testsuite name="my-feature" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+      '    <testcase classname="my-scenario" name="my scenario" time="0.001">\n'+
+      '    </testcase>\n'+
+      '  </testsuite>\n'+
+      '  <testsuite name="my-feature-1" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+      '    <testcase classname="my-scenario-1" name="my scenario 1" time="0.001">\n'+
+      '    </testcase>\n'+
+      '  </testsuite>\n'+
+      '</testsuites>'
+      );
+      })
+    })
+
+    })   
 
 
 });

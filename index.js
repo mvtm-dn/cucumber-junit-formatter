@@ -118,7 +118,7 @@ class JUnitFormatter extends Formatter {
           testCaseId=`${convertNameToId(pickle.name)}`;
       let attr,testSuite;
       if (this._result.length && this._result[this._result.length-1].testsuite[0]._attr.name===testSuiteId) {
-          testSuite=this._result[this._result.lenght-1].testsuite;
+          testSuite=this._result[this._result.length-1].testsuite;
           attr=testSuite[0]._attr;
       }
       else {
