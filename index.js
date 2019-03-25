@@ -56,7 +56,7 @@ class JUnitFormatter extends Formatter {
       }
           
       if (pickle.tags.length) {
-        testSuite.push({properites:pickle.tags.map(tag=>createProperty("tag",tag.name))});
+        testSuite.push({properties:pickle.tags.map(tag=>createProperty("tag",tag.name))});
       }
       
       testCase.steps.forEach((step,index)=>{
@@ -137,6 +137,10 @@ class JUnitFormatter extends Formatter {
             }
         }
       ];
+
+      if (pickle.tags.length) {
+          testCaseTag.push({properties:pickle.tags.map(tag=>createProperty("tag",tag.name))});
+      }
       
       testCase.steps.every((step,index)=>{
         const {gherkinKeyword, pickleStep } = options.eventDataCollector.getTestStepData({testCase:testCase,index:index});
