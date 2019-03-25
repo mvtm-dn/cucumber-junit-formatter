@@ -83,12 +83,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
       '<testsuites>\n'+
       '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
-      '    <properites>\n'+
+      '    <properties>\n'+
       '      <property name="tag" value="@tag1">\n'+
       '      </property>\n'+
       '      <property name="tag" value="@tag2">\n'+
       '      </property>\n'+
-      '    </properites>\n'+
+      '    </properties>\n'+
       '    <testcase classname="my-step" name="my step" time="0.001">\n'+
       '    </testcase>\n'+
       '  </testsuite>\n'+
@@ -123,12 +123,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
       '<testsuites>\n'+
       '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
-      '    <properites>\n'+
+      '    <properties>\n'+
       '      <property name="tag" value="@tag1">\n'+
       '      </property>\n'+
       '      <property name="tag" value="@tag2">\n'+
       '      </property>\n'+
-      '    </properites>\n'+
+      '    </properties>\n'+
       '    <testcase classname="my-step" name="my step" time="0.001">\n'+
       '      <failure message="undefined">my error</failure>\n'+
       '    </testcase>\n'+
@@ -172,12 +172,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
       '<testsuites>\n'+
       '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001">\n'+
-      '    <properites>\n'+
+      '    <properties>\n'+
       '      <property name="tag" value="@tag1">\n'+
       '      </property>\n'+
       '      <property name="tag" value="@tag2">\n'+
       '      </property>\n'+
-      '    </properites>\n'+
+      '    </properties>\n'+
       '    <testcase classname="my-step" name="my step" time="0.001">\n'+
       '      <error message="undefined">Multiple step definitions match:\n' +
       '  pattern1        - steps.js:3\n' +
@@ -225,12 +225,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-step" name="my step" time="0.000">\n'+
           '    </testcase>\n'+
           '  </testsuite>\n'+
@@ -262,12 +262,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-scenario-before" name="my scenario before" time="0.001">\n'+
           '      <error message="undefined">my error</error>\n'+
           '    </testcase>\n'+
@@ -308,12 +308,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="2" failures="0" skipped="0" errors="1" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-step" name="my step" time="0.000">\n'+
           '    </testcase>\n'+
           '    <testcase classname="my-scenario-after" name="my scenario after" time="0.001">\n'+
@@ -357,12 +357,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-step" name="my step" time="0.000">\n'+
           '      <failure message="Pending">Pending</failure>\n'+
           '    </testcase>\n'+
@@ -403,12 +403,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-step" name="my step" time="0.000">\n'+
           '      <failure message="Undefined step. Implement with the following snippet:">Undefined step. Implement with the following snippet:\n'+
           '  Given(/^my step$/, function(callback) {\n'+
@@ -453,12 +453,12 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
           '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="1" errors="0" time="0.001">\n'+
-          '    <properites>\n'+
+          '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
           '      <property name="tag" value="@tag2">\n'+
           '      </property>\n'+
-          '    </properites>\n'+
+          '    </properties>\n'+
           '    <testcase classname="my-step" name="my step" time="0.000">\n'+
           '      <skipped>\n'+
           '      </skipped>\n'+
@@ -555,22 +555,22 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
       '<testsuites>\n'+
       '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
-      '    <properites>\n'+
+      '    <properties>\n'+
       '      <property name="tag" value="@tag1">\n'+
       '      </property>\n'+
       '      <property name="tag" value="@tag2">\n'+
       '      </property>\n'+
-      '    </properites>\n'+
+      '    </properties>\n'+
       '    <testcase classname="my-step" name="my step" time="0.001">\n'+
       '    </testcase>\n'+
       '  </testsuite>\n'+
       '  <testsuite name="my-feature-1;my-scenario-1" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
-      '    <properites>\n'+
+      '    <properties>\n'+
       '      <property name="tag" value="@tag1">\n'+
       '      </property>\n'+
       '      <property name="tag" value="@tag2">\n'+
       '      </property>\n'+
-      '    </properites>\n'+
+      '    </properties>\n'+
       '    <testcase classname="my-step-1" name="my step 1" time="0.001">\n'+
       '    </testcase>\n'+
       '  </testsuite>\n'+

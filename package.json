@@ -42,6 +42,7 @@
   "author": "Vasyl Moskalov <vasyl@h2i.sg>",
   "license": "MIT",
   "main": "index.js",
+  "files": [],
   "dependencies": {
     "xml": "^1.0.1"
   },

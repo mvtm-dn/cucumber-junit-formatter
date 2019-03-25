@@ -138,7 +138,7 @@ class JUnitFormatter extends Formatter {
         }
       ];
 
-      if (pickle.tags.length) {
+      if (pickle.tags.length && options.propertiesInTestcase) {
           testCaseTag.push({properties:pickle.tags.map(tag=>createProperty("tag",tag.name))});
       }
       
