@@ -474,3 +474,131 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
 
 
 });
+
+describe('JunitFormatter with scenarioAsStep=true, propertiesInTestcase=true', () => {
+  beforeEach(function() {
+    this.eventBroadcaster = new EventEmitter()
+    this.output = ''
+    const logFn = data => {
+      this.output += data
+    }
+    this.junitFormatter = new JunitFormatter({
+      eventBroadcaster: this.eventBroadcaster,
+      eventDataCollector: new formatterHelpers.EventDataCollector(this.eventBroadcaster),
+      log: logFn,
+      scenarioAsStep:true,
+      propertiesInTestcase:true
+    })
+  })
+  
+    describe('one scenario with one step', () => {
+    beforeEach(function() {
+      const events = Gherkin.generateEvents(
+        '@tag1 @tag2\n' +
+          'Feature: my feature\n' +
+          'my feature description\n' +
+          'Scenario: my scenario\n' +
+          'my scenario description\n' +
+          'Given my step',
+        'a.feature'
+      )
+      events.forEach(event => {
+        this.eventBroadcaster.emit(event.type, event)
+        if (event.type === 'pickle') {
+          this.eventBroadcaster.emit('pickle-accepted', {
+            type: 'pickle-accepted',
+            pickle: event.pickle,
+            uri: event.uri,
+          })
+        }
+      })
+      this.testCase = { sourceLocation: { uri: 'a.feature', line: 4 } }
+    })
+
+    describe('passed', () => {
+      beforeEach(function() {
+        this.eventBroadcaster.emit('test-case-prepared', {
+          sourceLocation: this.testCase.sourceLocation,
+          steps: [
+            {
+              sourceLocation: { uri: 'a.feature', line: 6 },
+            },
+          ],
+        })
+        this.eventBroadcaster.emit('test-step-finished', {
+          index: 0,
+          testCase: this.testCase,
+          result: { duration: 1, status: Status.PASSED },
+        })
+        this.eventBroadcaster.emit('test-case-finished', {
+          sourceLocation: this.testCase.sourceLocation,
+          result: { duration: 1, status: Status.PASSED },
+        })
+        this.eventBroadcaster.emit('test-run-finished')
+      })
+
+      it('outputs the feature', function() {
+        expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
+      '<testsuites>\n'+
+      '  <testsuite name="my-feature" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+      '    <testcase classname="my-scenario" name="my scenario" time="0.001">\n'+
+      '      <properties>\n'+
+      '        <property name="tag" value="@tag1">\n'+
+      '        </property>\n'+
+      '        <property name="tag" value="@tag2">\n'+
+      '        </property>\n'+
+      '      </properties>\n'+
+      '    </testcase>\n'+
+      '  </testsuite>\n'+
+      '</testsuites>'
+      );
+      })
+    })
+    
+    describe('failed', () => {
+      beforeEach(function() {
+        this.eventBroadcaster.emit('test-case-prepared', {
+          sourceLocation: this.testCase.sourceLocation,
+          steps: [
+            {
+              sourceLocation: { uri: 'a.feature', line: 6 },
+            },
+          ],
+        })
+        this.eventBroadcaster.emit('test-step-finished', {
+          index: 0,
+          testCase: this.testCase,
+          result: { duration: 1, exception: 'my error', status: Status.FAILED },
+        })
+        this.eventBroadcaster.emit('test-case-finished', {
+          sourceLocation: this.testCase.sourceLocation,
+          result: { duration: 1, status: Status.FAILED },
+        })
+        this.eventBroadcaster.emit('test-run-finished')
+      })
+
+      it('includes the error message', function() {
+        expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
+      '<testsuites>\n'+
+      '  <testsuite name="my-feature" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
+      '    <testcase classname="my-scenario" name="my scenario" time="0.001">\n'+
+      '      <properties>\n'+
+      '        <property name="tag" value="@tag1">\n'+
+      '        </property>\n'+
+      '        <property name="tag" value="@tag2">\n'+
+      '        </property>\n'+
+      '      </properties>\n'+
+      '      <failure message="undefined">my error</failure>\n'+
+      '    </testcase>\n'+
+      '  </testsuite>\n'+
+      '</testsuites>'
+      );
+      
+      
+      })
+    })
+    
+  })
+  
+  
+})

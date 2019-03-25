@@ -1,9 +1,0 @@
-*.tgz
-.git
-.git/*
-.gitignore
-.eslint.rc
-coverage
-test
-.nyc-output
-.*

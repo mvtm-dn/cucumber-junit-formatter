@@ -24,6 +24,7 @@ You can configure formatter via `--format-options <JSON-OPTIONS>`:
 | --- | ---- | ----------- |
 | `scenarioAsStep` | `false` | If set to true means that feature is an testsuite and scenario is a step in test suite. Default value false (means that scenario is testsuite)
 |`withPackage` | `false` | If set then formatter add `package` attribute to `testsuite` element. Default value `false`.
+| `propertiesInTestcase` | `false` | Add `<properties...>` to `<testcase...>`. Works only with `scenarioAsStep=true`
 
 
 ## References
