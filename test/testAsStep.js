@@ -6,7 +6,7 @@ const { Formatter, formatterHelpers, Status } = require('cucumber');
 
 const JunitFormatter=require('../index.js');
 
-describe('JunitFormatter with scenarioAsStep=true', () => {
+describe.only('JunitFormatter with scenarioAsStep=true', () => {
   beforeEach(function() {
     this.eventBroadcaster = new EventEmitter()
     this.output = ''
@@ -35,6 +35,7 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
   })
   
     describe('one scenario with one step', () => {
+      let testCase;
     beforeEach(function() {
       const events = Gherkin.generateEvents(
         '@tag1 @tag2\n' +
@@ -55,7 +56,7 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
           })
         }
       })
-      this.testCase = { sourceLocation: { uri: 'a.feature', line: 4 } }
+      this.testCase = { attemptNumber: 1,sourceLocation: { uri: 'a.feature', line: 4 } }
     })
 
     describe('passed', () => {
@@ -68,13 +69,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             },
           ],
         })
+        this.eventBroadcaster.emit('test-case-started', this.testCase);
         this.eventBroadcaster.emit('test-step-finished', {
           index: 0,
           testCase: this.testCase,
           result: { duration: 1, status: Status.PASSED },
         })
         this.eventBroadcaster.emit('test-case-finished', {
-          sourceLocation: this.testCase.sourceLocation,
+          ...this.testCase,
           result: { duration: 1, status: Status.PASSED },
         })
         this.eventBroadcaster.emit('test-run-finished')
@@ -102,13 +104,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             },
           ],
         })
+        this.eventBroadcaster.emit('test-case-started', this.testCase);
         this.eventBroadcaster.emit('test-step-finished', {
           index: 0,
           testCase: this.testCase,
           result: { duration: 1, exception: 'my error', status: Status.FAILED },
         })
         this.eventBroadcaster.emit('test-case-finished', {
-          sourceLocation: this.testCase.sourceLocation,
+          ...this.testCase,
           result: { duration: 1, status: Status.FAILED },
         })
         this.eventBroadcaster.emit('test-run-finished')
@@ -139,6 +142,7 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             },
           ],
         })
+        this.eventBroadcaster.emit('test-case-started', this.testCase);
         this.eventBroadcaster.emit('test-step-finished', {
           index: 0,
           testCase: this.testCase,
@@ -151,7 +155,7 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
            },
         })
         this.eventBroadcaster.emit('test-case-finished', {
-          sourceLocation: this.testCase.sourceLocation,
+          ...this.testCase,
           result: { duration: 1, status: Status.AMBIGUOUS },
         })
         this.eventBroadcaster.emit('test-run-finished')
@@ -197,8 +201,9 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
                 },
               ],
             })
+            this.eventBroadcaster.emit('test-case-started', this.testCase);
             this.eventBroadcaster.emit('test-case-finished', {
-              sourceLocation: this.testCase.sourceLocation,
+              ...this.testCase,
               result: { duration: 1, status: Status.PASSED },
             })
             this.eventBroadcaster.emit('test-run-finished')
@@ -227,9 +232,10 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
                 },
               ],
             })
+            this.eventBroadcaster.emit('test-case-started', this.testCase);
 
             this.eventBroadcaster.emit('test-case-finished', {
-              sourceLocation: this.testCase.sourceLocation,
+              ...this.testCase,
               result: { duration: 1, status: Status.FAILED },
             })
             this.eventBroadcaster.emit('test-run-finished')
@@ -262,13 +268,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
                 }
               ],
             })
+           this.eventBroadcaster.emit('test-case-started', this.testCase);
            this.eventBroadcaster.emit('test-step-finished', {
               index: 1,
               testCase: this.testCase,
               result: { status: Status.PENDING },
             })            
             this.eventBroadcaster.emit('test-case-finished', {
-              sourceLocation: this.testCase.sourceLocation,
+              ...this.testCase,
               result: { duration: 1, status: Status.PENDING },
             })
 
@@ -302,13 +309,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
                 }
               ],
             })
+            this.eventBroadcaster.emit('test-case-started', this.testCase);
            this.eventBroadcaster.emit('test-step-finished', {
               index: 1,
               testCase: this.testCase,
               result: { status: Status.UNDEFINED },
             })            
             this.eventBroadcaster.emit('test-case-finished', {
-              sourceLocation: this.testCase.sourceLocation,
+              ...this.testCase,
               result: { duration: 1, status: Status.UNDEFINED },
             })
 
@@ -346,13 +354,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
                 }
               ],
             })
+            this.eventBroadcaster.emit('test-case-started', this.testCase);
            this.eventBroadcaster.emit('test-step-finished', {
               index: 1,
               testCase: this.testCase,
               result: { status: Status.SKIPPED },
             })            
             this.eventBroadcaster.emit('test-case-finished', {
-              sourceLocation: this.testCase.sourceLocation,
+              ...this.testCase,
               result: { duration: 1, status: Status.SKIPPED },
             })
 
@@ -416,13 +425,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             },
           ],
         })
+        this.eventBroadcaster.emit('test-case-started', this.testCase[0]);
         this.eventBroadcaster.emit('test-step-finished', {
           index: 0,
           testCase: this.testCase[0],
           result: { duration: 1, status: Status.PASSED },
         })
         this.eventBroadcaster.emit('test-case-finished', {
-          sourceLocation: this.testCase[0].sourceLocation,
+          ...this.testCase[0],
           result: { duration: 1, status: Status.PASSED },
         })
       this.pickleEvent('@tag1 @tag2\n' +
@@ -442,13 +452,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             },
           ],
         })
+        this.eventBroadcaster.emit('test-case-started', this.testCase[1]);
         this.eventBroadcaster.emit('test-step-finished', {
           index: 0,
           testCase: this.testCase[1],
           result: { duration: 1, status: Status.PASSED },
         })
         this.eventBroadcaster.emit('test-case-finished', {
-          sourceLocation: this.testCase[1].sourceLocation,
+          ...this.testCase[1],
           result: { duration: 1, status: Status.PASSED },
         })
         this.eventBroadcaster.emit('test-run-finished')

@@ -21,10 +21,11 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
-    "cucumber": "^5.1.0",
+    "cucumber": "^6.0.5",
     "eslint": "^5.11.1",
     "mocha": "^5.2.0",
     "nyc": "^13.3.0",
@@ -42,7 +43,12 @@
   "author": "Vasyl Moskalov <vasyl@h2i.sg>",
   "license": "MIT",
   "main": "index.js",
-  "files": [],
+  "files": [
+    "./utils.js",
+    "./before6.js",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "xml": "^1.0.1"
   },
