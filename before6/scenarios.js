@@ -2,7 +2,7 @@
 
 "use strict;";
 
-const {createProperty,createFailure,createFailureOrError,convertNameToId}=require("./util");
+const {createProperty,createFailure,createFailureOrError,convertNameToId}=require("../util");
 
 module.exports={
     scenarioAsSuite:(options,result)=>{return ({sourceLocation})=>{    

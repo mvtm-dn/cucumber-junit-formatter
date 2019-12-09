@@ -5,16 +5,16 @@ const { formatterHelpers, Status } = require('cucumber');
 const TestEvents=require("./emitter");
 
 
-const JunitFormatter=require('../index.js');
+const JUnitFormatter=require('../index.js');
 
-describe('JunitFormatter with scenarioAsStep=true', () => {
+describe.only('JUnitFormatter with scenarioAsStep=true', () => {
   beforeEach(function() {
     this.eventBroadcaster = new EventEmitter()
     this.output = ''
     const logFn = data => {
       this.output += data
     }
-    this.junitFormatter = new JunitFormatter({
+    this.JUnitFormatter = new JUnitFormatter({
       eventBroadcaster: this.eventBroadcaster,
       eventDataCollector: new formatterHelpers.EventDataCollector(this.eventBroadcaster),
       log: logFn,
@@ -146,7 +146,7 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
             );
             testCase.finishTestCase({
               duration: 1, status: Status.PASSED
-            },false);
+            },true);
             testCase.finish();
           })
       
@@ -174,8 +174,9 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
           );
           testCase.finishTestCase({
             duration: 1, 
+            exception: 'my error',
             status: Status.FAILED 
-          },false);
+          },true);
           testCase.finish();
         });
     
@@ -357,14 +358,14 @@ describe('JunitFormatter with scenarioAsStep=true', () => {
 
 });
 
-describe('JunitFormatter with scenarioAsStep=true, propertiesInTestcase=true', () => {
+describe('JUnitFormatter with scenarioAsStep=true, propertiesInTestcase=true', () => {
   beforeEach(function() {
     this.eventBroadcaster = new EventEmitter()
     this.output = ''
     const logFn = data => {
       this.output += data
     }
-    this.junitFormatter = new JunitFormatter({
+    this.JUnitFormatter = new JUnitFormatter({
       eventBroadcaster: this.eventBroadcaster,
       eventDataCollector: new formatterHelpers.EventDataCollector(this.eventBroadcaster),
       log: logFn,
