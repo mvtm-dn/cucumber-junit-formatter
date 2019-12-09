@@ -1,11 +1,8 @@
 import { expect } from 'chai'
 import EventEmitter from 'events'
-const { Formatter, formatterHelpers, Status } = require('cucumber');
-const Gherkin=require('gherkin');
+const { formatterHelpers, Status } = require('cucumber');
 
 const TestEvents=require("./emitter");
-
-// const before6=Number(version.split('.')[0])<6;
 
 
 const JunitFormatter=require('../index.js');
