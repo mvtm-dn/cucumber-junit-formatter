@@ -1,10 +1,11 @@
 /** Based on json_formater from cucumber module */
-import _ from 'lodash';
-import {GherkinDocumentParser, PickleParser,formatLocation} from 'cucumber/lib/formatter/helpers'; // eslint-disable-line sort-imports
-import Formatter from 'cucumber/lib/formatter';
-import Status from 'cucumber/lib/status';
-import {buildStepArgumentIterator} from 'cucumber/lib/step_arguments';
-import {format} from 'assertion-error-formatter';
+
+const _=require('lodash');
+const {GherkinDocumentParser, PickleParser,formatLocation}=require('cucumber/lib/formatter/helpers'); // eslint-disable-line sort-imports
+const {Formatter}=require('cucumber');
+const {Status}=require('cucumber');
+const {buildStepArgumentIterator}=require('cucumber/lib/step_arguments');
+const {format}=require('assertion-error-formatter');
 const utils=require("../util");
 const ToXML=require("./scenarios");
 // const {scenarioAsStep,scenarioAsSuite}=require("./scenarios");
@@ -90,7 +91,7 @@ getScenarioData=({ pickle, scenarioLineToDescriptionMap })=>{
 
 
 
-export default class JsonFormatter extends Formatter {
+class JsonFormatter extends Formatter {
     constructor(options) {
         super(options);
 //        this.features2xml=options.scenarioAsStep?scenarioAsStep:scenarioAsSuite;
@@ -152,8 +153,6 @@ export default class JsonFormatter extends Formatter {
             return featureData;
          });
         this.log(this._toXML.generateXML(features));
-//        this.log(JSON.stringify(features, null, 2));
-
     }
 
 
@@ -234,3 +233,6 @@ export default class JsonFormatter extends Formatter {
     }
 
 }
+
+module.exports=JsonFormatter;
+
