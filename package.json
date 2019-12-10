@@ -1,6 +1,6 @@
 {
   "name": "cucumber-junit-formatter",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Cucmber.js junit xml formatter",
   "engines": {
     "node": ">=8.0.0"
