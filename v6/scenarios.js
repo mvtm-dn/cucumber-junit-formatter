@@ -38,6 +38,7 @@ ToXML.prototype.scenarioAsTestcase=function(feature,result) {
         }
         return acc;
     },{tests:0,failures:0,skipped:0,errors:0,time:0})};
+    testSuite[0]._attr.time=testSuite[0]._attr.time.toFixed(3);
     result.push({testsuite:testSuite});
     return testSuite._attr;
 };
@@ -77,7 +78,7 @@ ToXML.prototype.processScenarioAsTestcase=function(feature,result) {
         return true;
     });
 //    console.log(JSON.stringify(testCase,null,2)); // eslint-disable-line
-    testCase[0]._attr.time=rez.time;
+    testCase[0]._attr.time=rez.time.toFixed(3);
     result.push({testcase:testCase});
     return rez;
 };
