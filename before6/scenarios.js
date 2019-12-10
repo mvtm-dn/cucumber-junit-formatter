@@ -2,7 +2,39 @@
 
 "use strict;";
 
-const {createProperty,createFailure,createFailureOrError,convertNameToId}=require("../util");
+const {formatterHelpers} = require('cucumber');
+const {createProperty,convertNameToId}=require("../util");
+
+/**
+* Create failure tag definition
+* @param {String} message failure message
+* @return {Object} failure tag 
+*/
+const createFailure=(message)=>{
+   return {
+       failure: [
+           { _attr: { message: message.split("\n").shift() } },
+           message
+       ]
+   };
+},
+
+/**
+* Create failure or error tag
+* @param {String} type tag name
+* @param {Error} exception exception
+* @return {Object} generated tag
+*/
+createFailureOrError=(type,exception)=>{
+   let {name}=exception,
+   ret ={};
+   ret[type]=[
+           { _attr: { message: name } },
+           formatterHelpers.formatError(exception)
+       ];
+   return ret;
+};
+
 
 module.exports={
     scenarioAsSuite:(options,result)=>{return ({sourceLocation})=>{    

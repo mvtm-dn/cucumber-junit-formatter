@@ -18,7 +18,61 @@ const {
   getStepKeyword
 } = PickleParser;
 
-const getScenarioData=({ pickle, scenarioLineToDescriptionMap })=>{
+
+
+/** 
+* Format table. 
+* Check if we can replace _.map whti row.cells.map(..)
+* @param {Object} dataTable
+* @return {Object}
+*/
+const formatDataTable=dataTable=>{
+   return {
+     rows: dataTable.rows.map(row=>({ cells: _.map(row.cells, 'value') }))
+   };
+},
+
+/** Format doc-string
+* @param {Object} docString
+* @return {Object} formatted string
+*/
+formatDocString=docString=>{
+   return {
+     content: docString.content,
+     line: docString.location.line
+   };
+},
+/** 
+* Return tags
+* @param {Object} obj
+* @return {Object|Array} tag list
+*/
+getTags=obj=>_.map(obj.tags, tagData=>(
+    {
+        name: tagData.name,
+        line: tagData.location.line
+    })
+),
+
+/**
+* Get feature data
+* @param {Object} feature 
+* @param {Object} uri 
+* @return {Object} feature data
+*/
+getFeatureData=(feature, uri)=>{
+   return {
+       description: feature.description,
+       keyword: feature.keyword,
+       name: feature.name,
+       line: feature.location.line,
+       id: utils.convertNameToId(feature.name), 
+       tags: getTags(feature),
+       uri
+   };
+},
+
+getScenarioData=({ pickle, scenarioLineToDescriptionMap })=>{
     const description = getScenarioDescription({
         pickle,
         scenarioLineToDescriptionMap
@@ -29,10 +83,11 @@ const getScenarioData=({ pickle, scenarioLineToDescriptionMap })=>{
         keyword: 'Scenario',
         line: pickle.locations[0].line,
         name: pickle.name,
-        tags: utils.getTags(pickle),
+        tags: getTags(pickle),
         type: 'scenario'
     };
 };
+
 
 
 export default class JsonFormatter extends Formatter {
@@ -49,8 +104,8 @@ export default class JsonFormatter extends Formatter {
      */
     formatStepArguments(stepArguments) {
         const iterator = buildStepArgumentIterator({
-            dataTable: utils.formatDataTable.bind(this),
-            docString: utils.formatDocString.bind(this)
+            dataTable: formatDataTable.bind(this),
+            docString: formatDocString.bind(this)
         });
         return _.map(stepArguments, iterator);
     }
@@ -69,7 +124,7 @@ export default class JsonFormatter extends Formatter {
         });
         const features = _.map(groupedTestCaseAttempts, (group, uri)=>{
             const gherkinDocument = this.eventDataCollector.gherkinDocumentMap[uri];
-            const featureData = utils.getFeatureData(gherkinDocument.feature, uri);
+            const featureData = getFeatureData(gherkinDocument.feature, uri);
             const stepLineToKeywordMap = getStepLineToKeywordMap(gherkinDocument);
             const scenarioLineToDescriptionMap = getScenarioLineToDescriptionMap(gherkinDocument);
             featureData.elements = group.map(testCaseAttempt=>{
