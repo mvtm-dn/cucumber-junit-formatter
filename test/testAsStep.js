@@ -7,7 +7,7 @@ const TestEvents=require("./emitter");
 
 const JUnitFormatter=require('../index.js');
 
-describe.only('JUnitFormatter with scenarioAsStep=true', () => {
+describe('JUnitFormatter with scenarioAsStep=true', () => {
   beforeEach(function() {
     this.eventBroadcaster = new EventEmitter()
     this.output = ''

@@ -153,7 +153,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
                 },
                 {
                   sourceLocation: { uri: 'a.feature', line: 6 },
-                  actionLocation: { uri: 'steps.js', line: 11 },
+                  actionLocation: { uri: 'steps.js', line: 11 }
                 },
                 {
                   actionLocation: { uri: 'steps.js', line: 12 },
@@ -162,7 +162,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             );
             testCase.finishTestCase({
               duration: 1, status: Status.PASSED
-            },false);
+            },true);
             testCase.finish();
           })
       
@@ -196,8 +196,9 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             );
             testCase.finishTestCase({
               duration: 1, 
-              status: Status.FAILED 
-            },false);
+              status: Status.FAILED,
+              exception: 'my error'
+            },true);
             testCase.finish();
           })
       
@@ -239,8 +240,9 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
             );
             testCase.finishTestCase({
               duration: 1, 
-              status: Status.FAILED 
-            },false,2);
+              status: Status.FAILED,
+              exception: 'my error'
+            },true,2);
             testCase.finish();
           })
           
