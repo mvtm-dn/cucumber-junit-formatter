@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2019-12-10
+### Added
+- Added missed implementation of 'withPackage' option for v6 code
+### Fixed
+- Duration values in v6 code. From version 6 duration in nanoseconds, not milliseconds
 
 ## [0.2.1] - 2019-12-10
 ### Added
