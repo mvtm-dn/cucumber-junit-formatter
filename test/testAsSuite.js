@@ -19,6 +19,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
       eventBroadcaster: this.eventBroadcaster,
       eventDataCollector: new formatterHelpers.EventDataCollector(this.eventBroadcaster),
       log: logFn,
+      withPackage:true
     })
   })
 
@@ -63,7 +64,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
       it('outputs the feature', function() {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
-          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
           '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
@@ -90,7 +91,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
       it('includes the error message', function() {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
-          '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
+          '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
           '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
@@ -122,7 +123,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
       it('includes the error message', function() {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
-          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001">\n'+
+          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001" package="my-scenario">\n'+
           '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
@@ -171,7 +172,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('outputs test suties', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -207,7 +208,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('include error messages', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="1" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -252,7 +253,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('include error messages', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="2" failures="0" skipped="0" errors="1" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="2" failures="0" skipped="0" errors="1" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -295,7 +296,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('include error messages', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -335,7 +336,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('include error messages', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="1" failures="1" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -379,7 +380,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           it('include error messages', function() {
             expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
               '<testsuites>\n'+
-              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="1" errors="0" time="0.001">\n'+
+              '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="1" errors="0" time="0.001" package="my-scenario">\n'+
               '    <properties>\n'+
               '      <property name="tag" value="@tag1">\n'+
               '      </property>\n'+
@@ -437,7 +438,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
       it('outputs the features', function() {
         expect(this.output).to.equal('<?xml version="1.0" encoding="UTF-8"?>\n'+
           '<testsuites>\n'+
-          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+          '  <testsuite name="my-feature;my-scenario" tests="1" failures="0" skipped="0" errors="0" time="0.001" package="my-scenario">\n'+
           '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+
@@ -447,7 +448,7 @@ describe('JunitFormatter with scenarioAsStep=false', () => {
           '    <testcase classname="my-step" name="my step" time="0.001">\n'+
           '    </testcase>\n'+
           '  </testsuite>\n'+
-          '  <testsuite name="my-feature-1;my-scenario-1" tests="1" failures="0" skipped="0" errors="0" time="0.001">\n'+
+          '  <testsuite name="my-feature-1;my-scenario-1" tests="1" failures="0" skipped="0" errors="0" time="0.001" package="my-scenario-1">\n'+
           '    <properties>\n'+
           '      <property name="tag" value="@tag1">\n'+
           '      </property>\n'+

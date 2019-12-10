@@ -109,6 +109,9 @@ ToXML.prototype.processScenarioAsTestsuite=function(feature,result,parent) {
     if (feature.tags) {
         testSuite.push({properties:feature.tags.map(tag=>utils.createProperty("tag",tag.name))});
     }
+    if (this.withPackage) {
+        rez.package=utils.convertNameToId(feature.id);
+    }
     feature.steps.every(step=>{
         rez.time+=(step.result.duration || 0)/(1000*MULTIPLIER);
         rez.failures+=step.result.failures;
