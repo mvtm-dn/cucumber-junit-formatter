@@ -1,7 +1,13 @@
 language: node_js
 node_js:
   - "8"
+before_script:
+  - 'if [ "$CUCUMBER_VERSION" ]; then npm install cucumber@^$CUCUMBER_VERSION.0.0; fi'
 
+env:
+  - CUCUMBER_VERSION=5
+  - CUCUMBER_VERSION=6
+  
 script:
   - npm run test
   - npm run coverage:ci
