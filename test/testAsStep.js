@@ -3,7 +3,7 @@ import EventEmitter from 'events'
 const { formatterHelpers, Status } = require('cucumber');
 
 const TestEvents=require("./emitter");
-
+const MULTIPLIER=(require("cucumber/lib/time").MILLISECONDS_IN_NANOSECOND||1); // In cucumber 6.0+ duration in nanoseconds, not milliseconds
 
 const JUnitFormatter=require('../index.js');
 
@@ -55,7 +55,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
       beforeEach(function() {
         testCase.prepareTestCase();
         testCase.finishTestCase({
-          duration: 1, status: Status.PASSED 
+          duration: MULTIPLIER*1, status: Status.PASSED 
         });
         testCase.finish();
       })
@@ -76,7 +76,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
       beforeEach(function() {
         testCase.prepareTestCase();
         testCase.finishTestCase({
-          duration: 1, exception: 'my error', status: Status.FAILED 
+          duration: MULTIPLIER*1, exception: 'my error', status: Status.FAILED 
         });
         testCase.finish();
       })
@@ -98,7 +98,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
       beforeEach(function() {
         testCase.prepareTestCase();
         testCase.finishTestCase({
-          duration: 1, 
+          duration: MULTIPLIER*1, 
           exception: 'Multiple step definitions match:\n' +
             '  pattern1        - steps.js:3\n' +
             '  longer pattern2 - steps.js:4',
@@ -145,7 +145,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
               ]
             );
             testCase.finishTestCase({
-              duration: 1, status: Status.PASSED
+              duration: MULTIPLIER*1, status: Status.PASSED
             },true);
             testCase.finish();
           })
@@ -168,12 +168,12 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
             [
               {
                 actionLocation: { uri: 'steps.js', line: 10 },
-                result: { duration: 1, exception: 'my error', status: Status.FAILED },
+                result: { duration: MULTIPLIER*1, exception: 'my error', status: Status.FAILED },
               }
             ]
           );
           testCase.finishTestCase({
-            duration: 1, 
+            duration: MULTIPLIER*1, 
             exception: 'my error',
             status: Status.FAILED 
           },true);
@@ -207,7 +207,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
             ]
           );
           testCase.finishTestCase(
-            { duration: 1, status: Status.PENDING },
+            { duration: MULTIPLIER*1, status: Status.PENDING },
             true,
             1
           );
@@ -241,7 +241,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
             ]
           );
           testCase.finishTestCase(
-            { duration: 1,status: Status.UNDEFINED },
+            { duration: MULTIPLIER*1,status: Status.UNDEFINED },
             true,
             1
           );
@@ -279,7 +279,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
             ]
           );
           testCase.finishTestCase(
-            { duration: 1, status: Status.SKIPPED },
+            { duration: MULTIPLIER*1, status: Status.SKIPPED },
             true,
             1
           );
@@ -322,7 +322,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
               4
           );
         testCase.prepareTestCase();
-        testCase.finishTestCase({ duration: 1, status: Status.PASSED });
+        testCase.finishTestCase({ duration: MULTIPLIER*1, status: Status.PASSED });
         testCase.addScenario('@tag1 @tag2\n' +
                 'Feature: my feature 1\n' +
                 'my feature 1 description\n' +
@@ -333,7 +333,7 @@ describe('JUnitFormatter with scenarioAsStep=true', () => {
               4
           );
           testCase.prepareTestCase(undefined,1);
-          testCase.finishTestCase({ duration: 1, status: Status.PASSED },true,0,1);
+          testCase.finishTestCase({ duration: MULTIPLIER*1, status: Status.PASSED },true,0,1);
           testCase.finish();
       })
 
@@ -393,7 +393,7 @@ describe('JUnitFormatter with scenarioAsStep=true, propertiesInTestcase=true', (
     describe('passed', () => {
       beforeEach(function() {
         testCase.prepareTestCase();
-        testCase.finishTestCase({ duration: 1, status: Status.PASSED });
+        testCase.finishTestCase({ duration: MULTIPLIER*1, status: Status.PASSED });
         testCase.finish();
       })
 
@@ -418,7 +418,7 @@ describe('JUnitFormatter with scenarioAsStep=true, propertiesInTestcase=true', (
     describe('failed', () => {
       beforeEach(function() {
         testCase.prepareTestCase();
-        testCase.finishTestCase({ duration: 1, exception: 'my error', status: Status.FAILED });
+        testCase.finishTestCase({ duration: MULTIPLIER*1, exception: 'my error', status: Status.FAILED });
         testCase.finish();
       })
 

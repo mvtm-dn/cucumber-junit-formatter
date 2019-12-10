@@ -4,6 +4,7 @@
 
 const xml = require('xml');
 const utils = require('../util');
+const MULTIPLIER=(require("cucumber/lib/time").MILLISECONDS_IN_NANOSECOND||1); // eslint-disable-line global-require
 
 
 let ToXML=function(options) {
@@ -52,7 +53,7 @@ ToXML.prototype.processScenarioAsTestcase=function(feature,result) {
     }
 
     feature.steps.every(step=>{
-        rez.time+=(step.result.duration || 0)/1000;
+        rez.time+=(step.result.duration || 0)/(1000*MULTIPLIER);
         rez.failures+=step.result.failures;
         rez.skipped+=step.result.skipped;
         rez.errors+=step.result.errors;
@@ -108,7 +109,7 @@ ToXML.prototype.processScenarioAsTestsuite=function(feature,result,parent) {
         testSuite.push({properties:feature.tags.map(tag=>utils.createProperty("tag",tag.name))});
     }
     feature.steps.every(step=>{
-        rez.time+=(step.result.duration || 0)/1000;
+        rez.time+=(step.result.duration || 0)/(1000*MULTIPLIER);
         rez.failures+=step.result.failures;
         rez.skipped+=step.result.skipped;
         rez.errors+=step.result.errors;
@@ -119,7 +120,7 @@ ToXML.prototype.processScenarioAsTestsuite=function(feature,result,parent) {
         rez.tests+=1;
         let name=step.name || `${feature.name} ${step.keyword.trim().toLowerCase()}`;
         let id=utils.convertNameToId(name);
-        let testCase=[{_attr:{classname:id,name:name,time:((step.result.duration || 0)/1000).toFixed(3)}}];
+        let testCase=[{_attr:{classname:id,name:name,time:((step.result.duration || 0)/(1000*MULTIPLIER)).toFixed(3)}}];
         testSuite.push({testcase:testCase});
         if (step.result.failures) {
             testCase.push({failure:[{_attr:{message:step.result.error_name}},step.result.error_message]});

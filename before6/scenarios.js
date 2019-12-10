@@ -4,6 +4,9 @@
 
 const {formatterHelpers} = require('cucumber');
 const {createProperty,convertNameToId}=require("../util");
+// In cucumber 6.0+ duration in nanoseconds, not milliseconds
+const MULTIPLIER=(require("cucumber/lib/time").MILLISECONDS_IN_NANOSECOND||1); // eslint-disable-line global-require
+
 
 /**
 * Create failure tag definition
@@ -61,7 +64,7 @@ module.exports={
                       _attr:{
                           classname:testCaseId,
                           name:gherkinKeyword?pickleStep.text:(pickle.name+(index?' after':' before')),
-                          time:((result.duration || 0)/1000).toFixed(3)
+                          time:((result.duration || 0)/(1000*MULTIPLIER)).toFixed(3)
                       }
                   }
               ];
@@ -126,7 +129,7 @@ module.exports={
               _attr:{
                   classname:testCaseId,
                   name:pickle.name,
-                  time:((testCase.result.duration ||0)/1000).toFixed(3)
+                  time:((testCase.result.duration ||0)/(1000*MULTIPLIER)).toFixed(3)
               }
           }
         ];
